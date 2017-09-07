@@ -8,18 +8,24 @@ while True:
 	
 	
 	#try to open file less_cookies.txt
+	#extract the content to less_cookies
 	#if doesn't exist, sleep for 20s
 	try:
-		less_cookies=open("less_cookies.txt","r").read().encode('ascii', 'ignore').decode()
+		with open ("less_cookies.txt","r") as f:
+			less_cookies=f.read().encode('ascii', 'ignore').decode()
 	except FileNotFoundError:
 		print (".")
 		sleep(20)
 		continue
 	
 	
+	#after extracting the data
+	#delete the input file
+	subprocess.call("rm less_cookies.txt",shell=True)
 	
-	#after opening the file
-	#extracting every single piece of cookies in file
+	
+	
+	#extracting every single piece of cookies in the data extracted
 	#making the cookies into dict and store the cookies in a list
 	cookiesdict_list=[]
 	for cookies in less_cookies.split("\n")[:-1]:
@@ -46,17 +52,10 @@ while True:
 		except TypeError:
 			print ("no passwd")
 			continue
-			
+
 		#output the data
 		print ("\n"+"===============output===============")
 		print (names+","+passwd)
 		print ("====================================")
-		namelist=open("namelist.txt","a")
-		namelist.write(names+","+passwd+"\n")
-		namelist.close()
-	
-	
-	
-	
-	#delete the input file
-	subprocess.call("rm less_cookies.txt",shell=True)
+		with open("namelist.txt","a") as f:
+			f.write(names+","+passwd+"\n")
